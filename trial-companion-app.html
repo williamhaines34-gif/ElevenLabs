@@ -1760,6 +1760,8 @@
     container.innerHTML = '';
     const widget = document.createElement('elevenlabs-convai');
     widget.setAttribute('agent-id', agentId);
+    const patientName = g('patient-name').value || 'Billy';
+    widget.setAttribute('dynamic-variables', JSON.stringify({ Patient_Name: patientName }));
     container.appendChild(widget);
   }
 
