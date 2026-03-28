@@ -744,19 +744,13 @@
       <div class="brand-tagline">Patient-Centered Voice ePRO for Clinical Trials</div>
     </div>
 
-    <div class="form-group">
-      <label class="form-label">ElevenLabs Agent ID</label>
-      <input type="text" id="agent-id" class="form-input mono" placeholder="Paste your Agent ID here…" value="agent_4701kmtqwp0efxgatzgtnp9krzhn" />
-      <p class="form-hint">Found in ElevenLabs → Conversational AI → Your Agent → Agent ID</p>
-    </div>
-
-    <hr class="rule" />
+    <input type="hidden" id="agent-id" value="agent_4701kmtqwp0efxgatzgtnp9krzhn" />
 
     <div class="section-label">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
         <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
       </svg>
-      Demo Patient Profile
+      Patient Profile
     </div>
 
     <div class="grid-2">
@@ -779,10 +773,10 @@
     </div>
 
     <button class="btn-primary" onclick="startLiveSession()">
-      Start Live Session →
+      Start Session →
     </button>
     <button class="btn-demo" onclick="startDemoMode()">
-      ✦ Run Demo Mode (no Agent ID needed)
+      ✦ Run Demo Mode
     </button>
 
   </div>
@@ -1040,7 +1034,7 @@
   async function startLiveSession() {
     const agentId = g('agent-id').value.trim();
     if (!agentId) {
-      alert('Please enter your ElevenLabs Agent ID to start a live session, or use Demo Mode.');
+      alert('Agent configuration is missing. Please contact your trial administrator.');
       return;
     }
     isDemoMode = false;
@@ -1059,7 +1053,7 @@
         },
         onConnect:    ()       => { setStatus('speaking','Connected'); startTimer(); setMsg('Your Trial Companion is ready. The session has begun.'); },
         onDisconnect: ()       => { setStatus('ended','Session Ended'); stopTimer(); finalizeSession(); },
-        onError:      (err)    => { console.error(err); setStatus('error','Connection Error'); setMsg('Connection failed. Check your Agent ID and refresh.'); },
+        onError:      (err)    => { console.error(err); setStatus('error','Connection Error'); setMsg('Connection failed. Please refresh the page and try again.'); },
         onModeChange: ({ mode })=> {
           if (mode === 'speaking')  { setStatus('speaking','Agent Speaking'); setWaveform('speak'); }
           else if (mode === 'listening') { setStatus('listening','Listening…'); setWaveform('listen'); }
@@ -1069,7 +1063,7 @@
     } catch (err) {
       console.error(err);
       setStatus('error', 'SDK Error');
-      setMsg('Could not load ElevenLabs SDK. Check console for details. Try Demo Mode to preview the UI.');
+      setMsg('Could not connect to the voice service. Please check your connection and try again.');
     }
   }
 
