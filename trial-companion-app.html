@@ -1229,7 +1229,7 @@
 <body>
 
 <!-- hidden patient config -->
-<input type="hidden" id="agent-id" value="agent_2001kmtzccd4f4e8k7amrqvcxh0a" />
+<input type="hidden" id="agent-id" value="agent_4701kmtqwp0efxgatzgtnp9krzhn" />
 <input type="hidden" id="patient-name" value="Billy" />
 <input type="hidden" id="trial-id" value="ILLUMINATE-1" />
 <input type="hidden" id="physician" value="Dr. Priya Mehta" />
@@ -1282,6 +1282,12 @@
           <svg viewBox="0 0 24 24"><path d="M12 1a4 4 0 0 0-4 4v7a4 4 0 0 0 8 0V5a4 4 0 0 0-4-4z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/></svg>
           Start Session
         </button>
+
+        <div style="margin-top:1rem;">
+          <label style="display:block;font-size:0.6875rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.375rem;">Agent ID</label>
+          <input type="text" id="agent-id-input" class="form-input" style="font-family:'Courier New',monospace;font-size:0.8125rem;letter-spacing:0.02em;" value="agent_4701kmtqwp0efxgatzgtnp9krzhn" />
+        </div>
+
         <button class="btn-demo-welcome" onclick="startDemoMode()">
           ✦ Run Demo Mode
         </button>
@@ -1747,11 +1753,15 @@
 
   /* ── Start live session ────────────────────────────────── */
   async function startLiveSession() {
-    const agentId = g('agent-id').value.trim();
+    const agentIdInput = g('agent-id-input');
+    const agentId = agentIdInput ? agentIdInput.value.trim() : g('agent-id').value.trim();
     if (!agentId) {
-      alert('Agent configuration is missing. Please contact your trial administrator.');
+      alert('Please enter an Agent ID to start a session.');
+      if (agentIdInput) agentIdInput.focus();
       return;
     }
+    g('agent-id').value = agentId;
+
     isDemoMode = false;
     resetSessionUI();
     populateHeader();
@@ -1768,6 +1778,8 @@
       return;
     }
 
+    setMsg('Connecting to your Trial Companion…');
+
     try {
       const { Conversation } = await import('https://esm.sh/@elevenlabs/client');
 
@@ -1777,19 +1789,40 @@
           submit_epro_data:    (p) => handleEproSubmit(p),
           trigger_safety_alert:(p) => handleSafetyAlert(p),
         },
-        onConnect:    ()       => { setStatus('speaking','Connected'); startTimer(); setMsg('Your Trial Companion is ready. The session has begun.'); },
-        onDisconnect: ()       => { setStatus('ended','Session Ended'); stopTimer(); finalizeSession(); },
-        onError:      (err)    => { console.error(err); setStatus('error','Connection Error'); setMsg('Connection failed. Please refresh the page and try again.'); },
-        onModeChange: ({ mode })=> {
+        onConnect: ({ conversationId }) => {
+          console.log('Connected, conversation ID:', conversationId);
+          setStatus('speaking','Connected');
+          startTimer();
+          setMsg('Your Trial Companion is ready. The session has begun.');
+        },
+        onDisconnect: () => {
+          console.log('Disconnected');
+          setStatus('ended','Session Ended');
+          stopTimer();
+          finalizeSession();
+        },
+        onMessage: (message) => {
+          console.log('Message:', message);
+        },
+        onError: (error) => {
+          console.error('Conversation error:', error);
+          setStatus('error','Connection Error');
+          setMsg('Connection failed. Please refresh the page and try again.');
+        },
+        onStatusChange: (status) => {
+          console.log('Status:', status);
+        },
+        onModeChange: ({ mode }) => {
+          console.log('Mode:', mode);
           if (mode === 'speaking')  { setStatus('speaking','Agent Speaking'); setWaveform('speak'); }
           else if (mode === 'listening') { setStatus('listening','Listening…'); setWaveform('listen'); }
         },
       });
 
     } catch (err) {
-      console.error(err);
+      console.error('Session start error:', err);
       setStatus('error', 'Connection Error');
-      setMsg('Could not connect to the voice service. Please check your connection and try again.');
+      setMsg('Could not connect to the voice service. Please check your Agent ID and try again.');
     }
   }
 
