@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -1413,16 +1414,7 @@
   <div class="session-body">
 
     <div class="agent-panel">
-      <div class="avatar-wrap">
-        <div class="avatar-ring" id="avatar-ring"></div>
-        <div class="avatar-body">
-          <div class="avatar-icon">
-            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M12 1a4 4 0 0 0-4 4v7a4 4 0 0 0 8 0V5a4 4 0 0 0-4-4zm-6 10a6 6 0 0 0 5 5.92V19H9v2h6v-2h-2v-2.08A6 6 0 0 0 18 11h-2a4 4 0 0 1-8 0H6z"/>
-            </svg>
-          </div>
-        </div>
-      </div>
+      <div id="widget-container" style="display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1.5rem;width:100%;max-width:500px;"></div>
 
       <div class="status-area">
         <div class="status-pill idle" id="status-pill">
@@ -1430,12 +1422,6 @@
           <span id="status-text">Initializing…</span>
         </div>
         <div class="session-clock" id="clock">0:00</div>
-      </div>
-
-      <div class="waveform" id="waveform">
-        <div class="wb"></div><div class="wb"></div><div class="wb"></div>
-        <div class="wb"></div><div class="wb"></div><div class="wb"></div>
-        <div class="wb"></div><div class="wb"></div><div class="wb"></div>
       </div>
 
       <div class="agent-msg" id="agent-msg">
@@ -1766,64 +1752,15 @@
     resetSessionUI();
     populateHeader();
     switchScreen('session');
-    setStatus('connect', 'Connecting…');
-    setMsg('Requesting microphone access…');
+    setStatus('speaking', 'Session Active');
+    startTimer();
+    setMsg('Speak with your Trial Companion using the widget below.');
 
-    try {
-      await navigator.mediaDevices.getUserMedia({ audio: true });
-    } catch (micErr) {
-      console.error('Microphone access denied:', micErr);
-      setStatus('error', 'Microphone Blocked');
-      setMsg('Microphone access is required for voice sessions. Please allow microphone access and try again.');
-      return;
-    }
-
-    setMsg('Connecting to your Trial Companion…');
-
-    try {
-      const { Conversation } = await import('https://esm.sh/@elevenlabs/client');
-
-      conversation = await Conversation.startSession({
-        agentId,
-        clientTools: {
-          submit_epro_data:    (p) => handleEproSubmit(p),
-          trigger_safety_alert:(p) => handleSafetyAlert(p),
-        },
-        onConnect: ({ conversationId }) => {
-          console.log('Connected, conversation ID:', conversationId);
-          setStatus('speaking','Connected');
-          startTimer();
-          setMsg('Your Trial Companion is ready. The session has begun.');
-        },
-        onDisconnect: () => {
-          console.log('Disconnected');
-          setStatus('ended','Session Ended');
-          stopTimer();
-          finalizeSession();
-        },
-        onMessage: (message) => {
-          console.log('Message:', message);
-        },
-        onError: (error) => {
-          console.error('Conversation error:', error);
-          setStatus('error','Connection Error');
-          setMsg('Connection failed. Please refresh the page and try again.');
-        },
-        onStatusChange: (status) => {
-          console.log('Status:', status);
-        },
-        onModeChange: ({ mode }) => {
-          console.log('Mode:', mode);
-          if (mode === 'speaking')  { setStatus('speaking','Agent Speaking'); setWaveform('speak'); }
-          else if (mode === 'listening') { setStatus('listening','Listening…'); setWaveform('listen'); }
-        },
-      });
-
-    } catch (err) {
-      console.error('Session start error:', err);
-      setStatus('error', 'Connection Error');
-      setMsg('Could not connect to the voice service. Please check your Agent ID and try again.');
-    }
+    const container = g('widget-container');
+    container.innerHTML = '';
+    const widget = document.createElement('elevenlabs-convai');
+    widget.setAttribute('agent-id', agentId);
+    container.appendChild(widget);
   }
 
   /* ── Demo mode ─────────────────────────────────────────── */
@@ -1864,10 +1801,9 @@
 
   /* ── End session → go to post-session dashboard ────────── */
   async function endSession() {
-    if (conversation) {
-      await conversation.endSession();
-      conversation = null;
-    }
+    const container = g('widget-container');
+    if (container) container.innerHTML = '';
+
     stopTimer();
     finalizeSession();
 
@@ -1931,6 +1867,8 @@
     sessionSecs = 0;
     g('clock').textContent = '0:00';
     g('info-duration').textContent = '—';
+    const container = g('widget-container');
+    if (container) container.innerHTML = '';
     g('demo-strip').hidden = true;
 
     const badge = g('epro-badge');
@@ -2120,18 +2058,20 @@
     const dot  = g('status-dot');
     const ring = g('avatar-ring');
 
-    pill.className = 'status-pill ' + type;
-    dot.className  = 'status-dot';
-    ring.className = 'avatar-ring';
-    g('status-text').textContent = label;
+    if (pill) pill.className = 'status-pill ' + type;
+    if (dot) dot.className = 'status-dot';
+    if (ring) ring.className = 'avatar-ring';
+    const statusText = g('status-text');
+    if (statusText) statusText.textContent = label;
 
-    if (type === 'connect' || type === 'listening') dot.classList.add('blink');
-    if (type === 'speaking') { ring.classList.add('pulse-speak'); dot.classList.add('blink'); }
-    if (type === 'listening') ring.classList.add('pulse-listen');
+    if (dot && (type === 'connect' || type === 'listening')) dot.classList.add('blink');
+    if (type === 'speaking') { if (ring) ring.classList.add('pulse-speak'); if (dot) dot.classList.add('blink'); }
+    if (ring && type === 'listening') ring.classList.add('pulse-listen');
   }
 
   function setWaveform(mode) {
-    g('waveform').className = 'waveform ' + (mode || '');
+    const wf = g('waveform');
+    if (wf) wf.className = 'waveform ' + (mode || '');
   }
 
   function setMsg(text) {
