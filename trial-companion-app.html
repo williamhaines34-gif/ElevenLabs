@@ -1,0 +1,1280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Trial Companion — Voice ePRO Agent</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary:       #0F766E;
+      --primary-light: #CCFBF1;
+      --primary-dark:  #0C3D38;
+      --accent:        #7C3AED;
+      --danger:        #DC2626;
+      --success:       #059669;
+      --warning:       #D97706;
+      --text:          #0F172A;
+      --text-muted:    #64748B;
+      --border:        #E2E8F0;
+      --bg:            #F8FAFC;
+      --card:          #FFFFFF;
+    }
+
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    [hidden] { display: none !important; }
+
+    /* ─── SETUP SCREEN ─────────────────────────────────────────── */
+    #setup-screen {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      background: linear-gradient(145deg, #0C3D38 0%, #0F766E 55%, #0891B2 100%);
+    }
+
+    .setup-card {
+      background: white;
+      border-radius: 24px;
+      padding: 2.75rem;
+      max-width: 540px;
+      width: 100%;
+      box-shadow: 0 30px 60px rgba(0,0,0,0.2);
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+
+    .brand-mark {
+      width: 68px;
+      height: 68px;
+      border-radius: 18px;
+      background: linear-gradient(135deg, #0F766E, #0891B2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1rem;
+      box-shadow: 0 8px 20px rgba(15,118,110,0.35);
+    }
+
+    .brand-mark svg { width: 36px; height: 36px; }
+
+    .brand-name {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      letter-spacing: -0.02em;
+    }
+
+    .brand-tagline {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    .form-label {
+      display: block;
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 0.5rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.9375rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus { border-color: var(--primary); }
+    .form-input.mono { font-family: 'Courier New', monospace; font-size: 0.875rem; letter-spacing: 0.03em; }
+
+    .form-hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.375rem;
+    }
+
+    .form-group { margin-bottom: 1.125rem; }
+
+    .rule {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 1.5rem 0;
+    }
+
+    .section-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+
+    .btn-primary {
+      width: 100%;
+      padding: 0.9rem 1.5rem;
+      background: linear-gradient(135deg, #0F766E, #0891B2);
+      color: white;
+      border: none;
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+      margin-top: 0.5rem;
+    }
+
+    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+    .btn-primary:active { transform: translateY(0); opacity: 1; }
+
+    .btn-demo {
+      width: 100%;
+      padding: 0.7rem 1.5rem;
+      background: transparent;
+      color: var(--text-muted);
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      margin-top: 0.625rem;
+    }
+
+    .btn-demo:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+
+    /* ─── APP HEADER ────────────────────────────────────────────── */
+    .app-header {
+      height: 64px;
+      background: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 1.75rem;
+      flex-shrink: 0;
+    }
+
+    .h-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .h-brand-mark {
+      width: 32px;
+      height: 32px;
+      border-radius: 8px;
+      background: linear-gradient(135deg, #0F766E, #0891B2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .h-brand-mark svg { width: 18px; height: 18px; }
+
+    .h-brand-name {
+      font-size: 1rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .h-brand-name span { color: rgba(255,255,255,0.5); font-weight: 400; }
+
+    .h-meta {
+      display: flex;
+      align-items: center;
+      gap: 1.75rem;
+    }
+
+    .h-meta-item {
+      text-align: right;
+    }
+
+    .h-meta-label {
+      font-size: 0.625rem;
+      color: rgba(255,255,255,0.45);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    .h-meta-value {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: white;
+      margin-top: 0.1rem;
+    }
+
+    /* ─── SESSION LAYOUT ────────────────────────────────────────── */
+    #session-screen {
+      display: flex;
+      flex-direction: column;
+      height: 100vh;
+    }
+
+    .session-body {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 400px;
+      overflow: hidden;
+    }
+
+    /* ─── AGENT PANEL ───────────────────────────────────────────── */
+    .agent-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1.75rem;
+      padding: 3rem 2rem;
+      background: white;
+      border-right: 1px solid var(--border);
+      overflow: hidden;
+    }
+
+    .avatar-wrap {
+      position: relative;
+      width: 148px;
+      height: 148px;
+    }
+
+    .avatar-ring {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      background: rgba(15,118,110,0.08);
+    }
+
+    .avatar-ring.pulse-speak { animation: pulse-speak 1.6s ease-in-out infinite; }
+    .avatar-ring.pulse-listen { animation: pulse-listen 2s ease-in-out infinite; background: rgba(124,58,237,0.08); }
+
+    @keyframes pulse-speak {
+      0%, 100% { transform: scale(1); opacity: 0.7; }
+      50% { transform: scale(1.35); opacity: 0; }
+    }
+
+    @keyframes pulse-listen {
+      0%, 100% { transform: scale(1); opacity: 0.5; }
+      50% { transform: scale(1.18); opacity: 0; }
+    }
+
+    .avatar-body {
+      position: relative;
+      z-index: 1;
+      width: 148px;
+      height: 148px;
+      border-radius: 50%;
+      background: linear-gradient(145deg, #E0F2FE, var(--primary-light));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .avatar-icon {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #0F766E, #0891B2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .avatar-icon svg { width: 38px; height: 38px; fill: white; stroke: none; }
+
+    .status-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.375rem;
+    }
+
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      padding: 0.3rem 0.875rem;
+      border-radius: 100px;
+      font-size: 0.8rem;
+      font-weight: 600;
+    }
+
+    .status-pill.idle     { background: #F1F5F9; color: var(--text-muted); }
+    .status-pill.connect  { background: #FEF3C7; color: #92400E; }
+    .status-pill.speaking { background: var(--primary-light); color: var(--primary-dark); }
+    .status-pill.listening{ background: #EDE9FE; color: #5B21B6; }
+    .status-pill.ended    { background: #F1F5F9; color: var(--text-muted); }
+    .status-pill.error    { background: #FEF2F2; color: var(--danger); }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: currentColor;
+    }
+
+    .status-dot.blink { animation: blink 1s ease-in-out infinite; }
+
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.25} }
+
+    .session-clock {
+      font-size: 1.625rem;
+      font-weight: 300;
+      color: #94A3B8;
+      letter-spacing: 0.04em;
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Waveform */
+    .waveform {
+      display: flex;
+      align-items: center;
+      gap: 3px;
+      height: 44px;
+    }
+
+    .wb {
+      width: 4px;
+      background: var(--primary);
+      border-radius: 2px;
+      height: 5px;
+      transition: height 0.12s ease;
+      opacity: 0.7;
+    }
+
+    .waveform.speak .wb { animation: wb-anim 0.9s ease-in-out infinite; }
+    .waveform.listen .wb { animation: wb-anim 1.8s ease-in-out infinite; opacity: 0.4; }
+    .waveform.listen .wb { background: var(--accent); }
+
+    .wb:nth-child(1) { animation-delay: 0.00s; }
+    .wb:nth-child(2) { animation-delay: 0.08s; }
+    .wb:nth-child(3) { animation-delay: 0.16s; }
+    .wb:nth-child(4) { animation-delay: 0.24s; }
+    .wb:nth-child(5) { animation-delay: 0.32s; }
+    .wb:nth-child(6) { animation-delay: 0.24s; }
+    .wb:nth-child(7) { animation-delay: 0.16s; }
+    .wb:nth-child(8) { animation-delay: 0.08s; }
+    .wb:nth-child(9) { animation-delay: 0.00s; }
+
+    @keyframes wb-anim {
+      0%, 100% { height: 5px; }
+      50% { height: 34px; }
+    }
+
+    .agent-msg {
+      max-width: 340px;
+      text-align: center;
+      padding: 0.875rem 1.25rem;
+      background: var(--bg);
+      border-radius: 12px;
+      border-left: 3px solid var(--primary);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      min-height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .btn-end {
+      padding: 0.65rem 1.75rem;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      background: transparent;
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-end:hover:not(:disabled) { border-color: var(--danger); color: var(--danger); background: #FEF2F2; }
+    .btn-end:disabled { opacity: 0.4; cursor: default; }
+
+    /* ─── ePRO PANEL ────────────────────────────────────────────── */
+    .epro-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 0.875rem;
+      padding: 1.25rem;
+      background: var(--bg);
+      overflow-y: auto;
+    }
+
+    .epro-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .epro-heading { font-size: 0.9375rem; font-weight: 700; }
+
+    .badge {
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      padding: 0.2rem 0.6rem;
+      border-radius: 100px;
+    }
+
+    .badge.pending  { background: #FEF3C7; color: #78350F; }
+    .badge.complete { background: #D1FAE5; color: #065F46; }
+
+    .epro-card {
+      background: white;
+      border-radius: 12px;
+      padding: 1.125rem;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+
+    .card-label {
+      font-size: 0.6875rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+      color: var(--text-muted);
+      margin-bottom: 0.875rem;
+    }
+
+    .empty-hint {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.625rem;
+      padding: 1.25rem 0;
+      text-align: center;
+    }
+
+    .empty-hint-icon {
+      width: 40px;
+      height: 40px;
+      background: var(--bg);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .empty-hint-icon svg { width: 20px; height: 20px; stroke: #94A3B8; fill: none; stroke-width: 1.5; }
+
+    .empty-hint p { font-size: 0.8125rem; color: var(--text-muted); }
+
+    .metric-list { display: flex; flex-direction: column; gap: 0.8rem; }
+
+    .metric-item {}
+
+    .metric-row-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      margin-bottom: 0.3rem;
+    }
+
+    .metric-name { font-size: 0.8125rem; font-weight: 500; color: var(--text); }
+    .metric-val  { font-size: 0.8125rem; font-weight: 700; color: var(--primary); }
+    .metric-val.empty { color: var(--border); }
+
+    .bar-bg {
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      border-radius: 3px;
+      width: 0%;
+      transition: width 1.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .bar-low    { background: #10B981; }
+    .bar-medium { background: #F59E0B; }
+    .bar-high   { background: #EF4444; }
+
+    .notes-text {
+      font-size: 0.875rem;
+      color: var(--text);
+      line-height: 1.65;
+      min-height: 48px;
+    }
+
+    .notes-text.empty { color: #94A3B8; font-style: italic; }
+
+    .info-rows { display: flex; flex-direction: column; gap: 0.5rem; }
+    .info-row  { display: flex; justify-content: space-between; align-items: center; font-size: 0.8125rem; }
+    .info-key  { color: var(--text-muted); }
+    .info-val  { font-weight: 600; color: var(--text); }
+    .info-val.ok { color: var(--success); }
+
+    /* ─── SAFETY MODAL ──────────────────────────────────────────── */
+    #safety-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 10, 20, 0.72);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 2rem;
+    }
+
+    .safety-card {
+      background: white;
+      border-radius: 22px;
+      padding: 2.25rem;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 32px 64px rgba(0,0,0,0.28);
+      animation: modal-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes modal-in {
+      from { transform: translateY(24px) scale(0.97); opacity: 0; }
+      to   { transform: translateY(0) scale(1); opacity: 1; }
+    }
+
+    .safety-head {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .safety-icon-wrap {
+      width: 50px;
+      height: 50px;
+      border-radius: 14px;
+      background: #FEF2F2;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .safety-icon-wrap svg { width: 26px; height: 26px; stroke: #DC2626; fill: none; stroke-width: 2; }
+
+    .safety-title    { font-size: 1.1875rem; font-weight: 700; color: #B91C1C; }
+    .safety-subtitle { font-size: 0.8125rem; color: var(--text-muted); margin-top: 0.125rem; }
+
+    .safety-quote {
+      background: #FFF7ED;
+      border-left: 3px solid #F59E0B;
+      border-radius: 8px;
+      padding: 0.875rem 1rem;
+      font-size: 0.875rem;
+      color: #78350F;
+      line-height: 1.55;
+      margin-bottom: 1.25rem;
+      font-style: italic;
+    }
+
+    .notif-list { display: flex; flex-direction: column; gap: 0.75rem; margin-bottom: 1.25rem; }
+
+    .notif-item {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+      padding: 0.875rem;
+      border-radius: 10px;
+      border: 1px solid var(--border);
+      opacity: 0;
+      transform: translateX(-12px);
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+
+    .notif-item.show { opacity: 1; transform: translateX(0); }
+
+    .notif-ico {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .notif-ico.doc      { background: #DBEAFE; }
+    .notif-ico.ec       { background: #FFE4E6; }
+    .notif-ico.crisis   { background: #D1FAE5; }
+    .notif-ico svg      { width: 17px; height: 17px; fill: none; stroke-width: 1.75; }
+    .notif-ico.doc svg   { stroke: #1D4ED8; }
+    .notif-ico.ec svg    { stroke: #BE123C; }
+    .notif-ico.crisis svg{ stroke: #065F46; }
+
+    .notif-body { flex: 1; }
+    .notif-name { font-size: 0.875rem; font-weight: 600; }
+    .notif-sub  { font-size: 0.75rem; color: var(--text-muted); margin-top: 0.1rem; }
+    .notif-time { font-size: 0.75rem; font-weight: 600; color: var(--success); white-space: nowrap; }
+
+    .resources-box {
+      background: #F0FDF4;
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1.25rem;
+    }
+
+    .resources-title { font-size: 0.75rem; font-weight: 700; color: #065F46; margin-bottom: 0.5rem; }
+
+    .resource-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8125rem;
+      color: var(--text);
+      padding: 0.2rem 0;
+    }
+
+    .resource-num { font-weight: 700; color: var(--primary); }
+
+    .btn-dismiss {
+      width: 100%;
+      padding: 0.8rem;
+      background: #FEF2F2;
+      border: 2px solid #FECACA;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 700;
+      color: #B91C1C;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-dismiss:hover { background: #DC2626; color: white; border-color: #DC2626; }
+
+    /* ─── DEMO MODE STRIP ───────────────────────────────────────── */
+    .demo-strip {
+      background: #FEF3C7;
+      border-bottom: 1px solid #FDE68A;
+      padding: 0.5rem 1.75rem;
+      font-size: 0.8125rem;
+      color: #78350F;
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .demo-strip-actions { display: flex; gap: 0.75rem; }
+
+    .btn-demo-action {
+      padding: 0.25rem 0.875rem;
+      background: #F59E0B;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-family: inherit;
+      font-size: 0.75rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .btn-demo-action:hover { opacity: 0.85; }
+    .btn-demo-action.danger { background: #EF4444; }
+  </style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════════════════
+     SETUP SCREEN
+═══════════════════════════════════════════════════════════ -->
+<div id="setup-screen">
+  <div class="setup-card">
+
+    <div class="brand">
+      <div class="brand-mark">
+        <!-- Waveform / voice icon -->
+        <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4"  y="14" width="4" height="8"  rx="2" fill="white" opacity="0.7"/>
+          <rect x="10" y="10" width="4" height="16" rx="2" fill="white"/>
+          <rect x="16" y="6"  width="4" height="24" rx="2" fill="white"/>
+          <rect x="22" y="10" width="4" height="16" rx="2" fill="white"/>
+          <rect x="28" y="14" width="4" height="8"  rx="2" fill="white" opacity="0.7"/>
+        </svg>
+      </div>
+      <div class="brand-name">Trial Companion</div>
+      <div class="brand-tagline">Patient-Centered Voice ePRO for Clinical Trials</div>
+    </div>
+
+    <div class="form-group">
+      <label class="form-label">ElevenLabs Agent ID</label>
+      <input type="text" id="agent-id" class="form-input mono" placeholder="Paste your Agent ID here…" />
+      <p class="form-hint">Found in ElevenLabs → Conversational AI → Your Agent → Agent ID</p>
+    </div>
+
+    <hr class="rule" />
+
+    <div class="section-label">
+      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
+      </svg>
+      Demo Patient Profile
+    </div>
+
+    <div class="grid-2">
+      <div class="form-group">
+        <label class="form-label">Patient Name</label>
+        <input type="text" id="patient-name" class="form-input" value="Sarah Chen" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Trial ID</label>
+        <input type="text" id="trial-id" class="form-input" value="ILLUMINATE-1" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Supervising Physician</label>
+        <input type="text" id="physician" class="form-input" value="Dr. Priya Mehta" />
+      </div>
+      <div class="form-group">
+        <label class="form-label">Session #</label>
+        <input type="number" id="session-num" class="form-input" value="12" min="1" />
+      </div>
+    </div>
+
+    <button class="btn-primary" onclick="startLiveSession()">
+      Start Live Session →
+    </button>
+    <button class="btn-demo" onclick="startDemoMode()">
+      ✦ Run Demo Mode (no Agent ID needed)
+    </button>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SESSION SCREEN
+═══════════════════════════════════════════════════════════ -->
+<div id="session-screen" hidden>
+
+  <!-- Header -->
+  <header class="app-header">
+    <div class="h-brand">
+      <div class="h-brand-mark">
+        <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <rect x="4"  y="14" width="4" height="8"  rx="2" fill="white" opacity="0.6"/>
+          <rect x="10" y="10" width="4" height="16" rx="2" fill="white"/>
+          <rect x="16" y="6"  width="4" height="24" rx="2" fill="white"/>
+          <rect x="22" y="10" width="4" height="16" rx="2" fill="white"/>
+          <rect x="28" y="14" width="4" height="8"  rx="2" fill="white" opacity="0.6"/>
+        </svg>
+      </div>
+      <div class="h-brand-name">Trial Companion <span>| Voice ePRO</span></div>
+    </div>
+    <div class="h-meta">
+      <div class="h-meta-item">
+        <div class="h-meta-label">Patient</div>
+        <div class="h-meta-value" id="h-patient">—</div>
+      </div>
+      <div class="h-meta-item">
+        <div class="h-meta-label">Trial</div>
+        <div class="h-meta-value" id="h-trial">—</div>
+      </div>
+      <div class="h-meta-item">
+        <div class="h-meta-label">Physician</div>
+        <div class="h-meta-value" id="h-physician">—</div>
+      </div>
+      <div class="h-meta-item">
+        <div class="h-meta-label">Session</div>
+        <div class="h-meta-value" id="h-session">—</div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Demo banner (hidden in live mode) -->
+  <div id="demo-strip" class="demo-strip" hidden>
+    ✦ Demo Mode — simulating a patient session for Trial Companion
+    <div class="demo-strip-actions">
+      <button class="btn-demo-action" onclick="demoFillData()">Simulate Session Complete</button>
+      <button class="btn-demo-action danger" onclick="demoTriggerAlert()">Trigger Safety Alert</button>
+    </div>
+  </div>
+
+  <!-- Body -->
+  <div class="session-body">
+
+    <!-- Agent panel -->
+    <div class="agent-panel">
+
+      <div class="avatar-wrap">
+        <div class="avatar-ring" id="avatar-ring"></div>
+        <div class="avatar-body">
+          <div class="avatar-icon">
+            <!-- Microphone icon -->
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 1a4 4 0 0 0-4 4v7a4 4 0 0 0 8 0V5a4 4 0 0 0-4-4zm-6 10a6 6 0 0 0 5 5.92V19H9v2h6v-2h-2v-2.08A6 6 0 0 0 18 11h-2a4 4 0 0 1-8 0H6z"/>
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      <div class="status-area">
+        <div class="status-pill idle" id="status-pill">
+          <div class="status-dot" id="status-dot"></div>
+          <span id="status-text">Initializing…</span>
+        </div>
+        <div class="session-clock" id="clock">0:00</div>
+      </div>
+
+      <div class="waveform" id="waveform">
+        <div class="wb"></div><div class="wb"></div><div class="wb"></div>
+        <div class="wb"></div><div class="wb"></div><div class="wb"></div>
+        <div class="wb"></div><div class="wb"></div><div class="wb"></div>
+      </div>
+
+      <div class="agent-msg" id="agent-msg">
+        Connecting to your Trial Companion…
+      </div>
+
+      <button class="btn-end" id="btn-end" onclick="endSession()">
+        End Session
+      </button>
+
+    </div>
+
+    <!-- ePRO panel -->
+    <div class="epro-panel">
+
+      <div class="epro-top">
+        <div class="epro-heading">ePRO Data Capture</div>
+        <div class="badge pending" id="epro-badge">Pending</div>
+      </div>
+
+      <!-- Metrics card -->
+      <div class="epro-card">
+        <div class="card-label">FACIT-Fatigue Scale (Adapted)</div>
+
+        <div id="metrics-empty" class="empty-hint">
+          <div class="empty-hint-icon">
+            <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75zM9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625zM16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/>
+            </svg>
+          </div>
+          <p>Data populates after session completes</p>
+        </div>
+
+        <div id="metrics-data" class="metric-list" style="display:none"></div>
+      </div>
+
+      <!-- Notes card -->
+      <div class="epro-card">
+        <div class="card-label">Clinical Notes</div>
+        <div class="notes-text empty" id="notes-text">Notable concerns will appear here once the session is complete.</div>
+      </div>
+
+      <!-- Summary card (hidden until data arrives) -->
+      <div class="epro-card" id="summary-card" hidden>
+        <div class="card-label">Session Summary</div>
+        <div class="notes-text" id="summary-text"></div>
+      </div>
+
+      <!-- Session info card -->
+      <div class="epro-card">
+        <div class="card-label">Session Info</div>
+        <div class="info-rows">
+          <div class="info-row"><span class="info-key">Date</span><span class="info-val" id="info-date">—</span></div>
+          <div class="info-row"><span class="info-key">Duration</span><span class="info-val" id="info-duration">—</span></div>
+          <div class="info-row"><span class="info-key">Compliance</span><span class="info-val ok">On Schedule</span></div>
+          <div class="info-row"><span class="info-key">Modality</span><span class="info-val">Voice (Conversational AI)</span></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     SAFETY ALERT MODAL
+═══════════════════════════════════════════════════════════ -->
+<div id="safety-modal" hidden>
+  <div class="safety-card">
+
+    <div class="safety-head">
+      <div class="safety-icon-wrap">
+        <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"/>
+        </svg>
+      </div>
+      <div>
+        <div class="safety-title">Safety Alert Triggered</div>
+        <div class="safety-subtitle" id="alert-type-label">Emergency protocol activated</div>
+      </div>
+    </div>
+
+    <div class="safety-quote" id="alert-quote">
+      Patient has expressed something requiring immediate clinical attention.
+    </div>
+
+    <div class="notif-list">
+
+      <div class="notif-item" id="notif-doc">
+        <div class="notif-ico doc">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4.26 10.147a60.436 60.436 0 00-.491 6.347A48.627 48.627 0 0112 20.904a48.627 48.627 0 018.232-4.41 60.46 60.46 0 00-.491-6.347m-15.482 0a50.57 50.57 0 00-2.658-.813A59.905 59.905 0 0112 3.493a59.902 59.902 0 0110.399 5.84c-.896.248-1.783.52-2.658.814m-15.482 0A50.697 50.697 0 0112 13.489a50.702 50.702 0 017.74-3.342M6.75 15a.75.75 0 100-1.5.75.75 0 000 1.5zm0 0v-3.675A55.378 55.378 0 0112 8.443m-7.007 11.55A5.981 5.981 0 006.75 15.75v-1.5"/>
+          </svg>
+        </div>
+        <div class="notif-body">
+          <div class="notif-name" id="notif-doc-name">Dr. Priya Mehta, MD</div>
+          <div class="notif-sub">Supervising Oncologist — Paged &amp; SMS alert sent</div>
+        </div>
+        <div class="notif-time" id="notif-doc-time">Sending…</div>
+      </div>
+
+      <div class="notif-item" id="notif-ec">
+        <div class="notif-ico ec">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2.25 6.75c0 8.284 6.716 15 15 15h2.25a2.25 2.25 0 002.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106c-.44-.11-.902.055-1.173.417l-.97 1.293c-.282.376-.769.542-1.21.38a12.035 12.035 0 01-7.143-7.143c-.162-.441.004-.928.38-1.21l1.293-.97c.363-.271.527-.734.417-1.173L6.963 3.102a1.125 1.125 0 00-1.091-.852H4.5A2.25 2.25 0 002.25 4.5v2.25z"/>
+          </svg>
+        </div>
+        <div class="notif-body">
+          <div class="notif-name">Emergency Contact Notified</div>
+          <div class="notif-sub" id="notif-ec-sub">Robert Chen (Spouse) · (555) 234-5678</div>
+        </div>
+        <div class="notif-time" id="notif-ec-time">Sending…</div>
+      </div>
+
+      <div class="notif-item" id="notif-crisis">
+        <div class="notif-ico crisis">
+          <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12z"/>
+          </svg>
+        </div>
+        <div class="notif-body">
+          <div class="notif-name">Crisis Support Connected</div>
+          <div class="notif-sub">Patient is being connected to support resources</div>
+        </div>
+        <div class="notif-time" id="notif-crisis-time">Active</div>
+      </div>
+
+    </div>
+
+    <div class="resources-box">
+      <div class="resources-title">Support Resources — Available Now</div>
+      <div class="resource-row"><span>Suicide &amp; Crisis Lifeline</span><span class="resource-num">988</span></div>
+      <div class="resource-row"><span>Cancer Support Community</span><span class="resource-num">1-888-793-9355</span></div>
+      <div class="resource-row"><span>NCI Cancer Information</span><span class="resource-num">1-800-227-2345</span></div>
+    </div>
+
+    <button class="btn-dismiss" onclick="dismissAlert()">
+      Acknowledge &amp; Continue Monitoring
+    </button>
+
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     JAVASCRIPT
+═══════════════════════════════════════════════════════════ -->
+<script type="module">
+
+  /* ── State ─────────────────────────────────────────────── */
+  let conversation  = null;
+  let timerInterval = null;
+  let sessionSecs   = 0;
+  let isDemoMode    = false;
+
+  /* ── Helpers: expose to inline onclick handlers ─────────── */
+  const g = (id) => document.getElementById(id);
+  window.startLiveSession  = startLiveSession;
+  window.startDemoMode     = startDemoMode;
+  window.endSession        = endSession;
+  window.dismissAlert      = dismissAlert;
+  window.demoFillData      = demoFillData;
+  window.demoTriggerAlert  = demoTriggerAlert;
+
+  /* ── Boot ──────────────────────────────────────────────── */
+  g('info-date').textContent = new Date().toLocaleDateString('en-US', {
+    weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'
+  });
+
+  /* ── Start live session ────────────────────────────────── */
+  async function startLiveSession() {
+    const agentId = g('agent-id').value.trim();
+    if (!agentId) {
+      alert('Please enter your ElevenLabs Agent ID to start a live session, or use Demo Mode.');
+      return;
+    }
+    isDemoMode = false;
+    populateHeader();
+    switchScreen('session');
+    setStatus('connect', 'Connecting…');
+
+    try {
+      const { Conversation } = await import('https://esm.sh/@11labs/client');
+
+      conversation = await Conversation.startSession({
+        agentId,
+        clientTools: {
+          submit_epro_data:    (p) => handleEproSubmit(p),
+          trigger_safety_alert:(p) => handleSafetyAlert(p),
+        },
+        onConnect:    ()       => { setStatus('speaking','Connected'); startTimer(); setMsg('Your Trial Companion is ready. The session has begun.'); },
+        onDisconnect: ()       => { setStatus('ended','Session Ended'); stopTimer(); finalizeSession(); },
+        onError:      (err)    => { console.error(err); setStatus('error','Connection Error'); setMsg('Connection failed. Check your Agent ID and refresh.'); },
+        onModeChange: ({ mode })=> {
+          if (mode === 'speaking')  { setStatus('speaking','Agent Speaking'); setWaveform('speak'); }
+          else if (mode === 'listening') { setStatus('listening','Listening…'); setWaveform('listen'); }
+        },
+      });
+
+    } catch (err) {
+      console.error(err);
+      setStatus('error', 'SDK Error');
+      setMsg('Could not load ElevenLabs SDK. Check console for details. Try Demo Mode to preview the UI.');
+    }
+  }
+
+  /* ── Demo mode ─────────────────────────────────────────── */
+  function startDemoMode() {
+    isDemoMode = true;
+    populateHeader();
+    switchScreen('session');
+    g('demo-strip').hidden = false;
+    setStatus('speaking', 'Agent Speaking');
+    setWaveform('speak');
+    startTimer();
+    setMsg('"Hello Sarah — I\'m your Trial Companion. How have you been feeling since our last check-in?"');
+    setTimeout(() => { setStatus('listening','Listening…'); setWaveform('listen'); setMsg('Listening to patient response…'); }, 4500);
+  }
+
+  function demoFillData() {
+    handleEproSubmit({
+      fatigue_score:   8,
+      sleep_quality:   7,
+      nausea_level:    3,
+      appetite:        5,
+      mood_score:      6,
+      pain_level:      4,
+      activity_level:  7,
+      notable_concerns: 'Patient reports increased fatigue since the most recent chemotherapy cycle (Day 42). Sleep quality has declined, waking 2–3 times per night. Mild nausea managed with current anti-emetics. Reports feeling emotionally drained but coping.',
+      session_summary:  'Sarah completed her 12th check-in session. Key finding: fatigue and sleep disruption have worsened since last cycle, correlating with reported activity limitation. No red flags identified. Data submitted to ILLUMINATE-1 EDC.'
+    });
+  }
+
+  function demoTriggerAlert() {
+    handleSafetyAlert({
+      alert_type: 'suicide_risk',
+      patient_statement: "I've just been so exhausted… I don't know how much more I can take. Sometimes I think everyone would be better off without me.",
+      severity: 'critical'
+    });
+  }
+
+  /* ── End session ───────────────────────────────────────── */
+  async function endSession() {
+    if (conversation) {
+      await conversation.endSession();
+      conversation = null;
+    }
+    stopTimer();
+    finalizeSession();
+    setStatus('ended', 'Session Ended');
+    setMsg('Session complete. Thank you, ' + g('patient-name').value + '. Your data has been securely recorded.');
+    g('btn-end').disabled = true;
+    g('btn-end').textContent = 'Session Complete';
+  }
+
+  function finalizeSession() {
+    g('info-duration').textContent = g('clock').textContent;
+  }
+
+  /* ── Client tool: ePRO data ────────────────────────────── */
+  function handleEproSubmit(p) {
+    // Badge
+    const badge = g('epro-badge');
+    badge.className = 'badge complete';
+    badge.textContent = 'Complete';
+
+    // Metrics
+    const metrics = [
+      { label: 'Fatigue Level',      val: p.fatigue_score   },
+      { label: 'Sleep Disruption',   val: p.sleep_quality   },
+      { label: 'Nausea',             val: p.nausea_level    },
+      { label: 'Appetite Impact',    val: p.appetite        },
+      { label: 'Emotional Distress', val: p.mood_score      },
+      { label: 'Pain Level',         val: p.pain_level      },
+      { label: 'Activity Limitation',val: p.activity_level  },
+    ];
+
+    g('metrics-empty').style.display = 'none';
+    const list = g('metrics-data');
+    list.style.display = 'flex';
+    list.innerHTML = '';
+
+    metrics.forEach(m => {
+      const v   = parseInt(m.val) || 0;
+      const pct = (v / 10) * 100;
+      const cls = v <= 3 ? 'bar-low' : v <= 6 ? 'bar-medium' : 'bar-high';
+      const el  = document.createElement('div');
+      el.className = 'metric-item';
+      el.innerHTML = `
+        <div class="metric-row-top">
+          <span class="metric-name">${m.label}</span>
+          <span class="metric-val">${v}/10</span>
+        </div>
+        <div class="bar-bg">
+          <div class="bar-fill ${cls}" data-pct="${pct}" style="width:0%"></div>
+        </div>`;
+      list.appendChild(el);
+    });
+
+    // Animate bars after next frame
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        document.querySelectorAll('.bar-fill').forEach(b => {
+          b.style.width = b.dataset.pct + '%';
+        });
+      }, 80);
+    });
+
+    // Notes
+    if (p.notable_concerns) {
+      const n = g('notes-text');
+      n.className = 'notes-text';
+      n.textContent = p.notable_concerns;
+    }
+
+    // Summary
+    if (p.session_summary) {
+      g('summary-card').hidden = false;
+      g('summary-text').textContent = p.session_summary;
+    }
+
+    finalizeSession();
+    return 'ePRO data successfully recorded and submitted to the clinical data system.';
+  }
+
+  /* ── Client tool: safety alert ─────────────────────────── */
+  function handleSafetyAlert(p) {
+    const modal = g('safety-modal');
+    modal.hidden = false;
+
+    const labels = {
+      suicide_risk:                   'Suicide risk detected — Emergency protocol activated',
+      life_threatening_side_effect:   'Life-threatening adverse event reported',
+      severe_adverse_event:           'Severe adverse event — Immediate attention required',
+    };
+    g('alert-type-label').textContent = labels[p.alert_type] || 'Emergency protocol activated';
+
+    if (p.patient_statement) {
+      g('alert-quote').textContent = `"${p.patient_statement}"`;
+    }
+
+    // Update doctor name
+    g('notif-doc-name').textContent = g('physician').value;
+
+    const now     = new Date();
+    const timeStr = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+
+    setTimeout(() => {
+      g('notif-doc').classList.add('show');
+      g('notif-doc-time').textContent = 'Sent ' + timeStr;
+    }, 350);
+    setTimeout(() => {
+      g('notif-ec').classList.add('show');
+      g('notif-ec-time').textContent = 'Sent ' + timeStr;
+    }, 800);
+    setTimeout(() => {
+      g('notif-crisis').classList.add('show');
+      g('notif-crisis-time').textContent = 'Active';
+    }, 1300);
+
+    return 'Safety alert triggered. Supervising physician and emergency contact have been notified. Connecting patient to crisis support resources now. Please continue speaking with the patient calmly until help arrives.';
+  }
+
+  function dismissAlert() {
+    g('safety-modal').hidden = true;
+  }
+
+  /* ── UI helpers ────────────────────────────────────────── */
+  function switchScreen(screen) {
+    g('setup-screen').hidden   = screen !== 'setup';
+    g('session-screen').hidden = screen !== 'session';
+  }
+
+  function populateHeader() {
+    g('h-patient').textContent  = g('patient-name').value;
+    g('h-trial').textContent    = g('trial-id').value;
+    g('h-physician').textContent= g('physician').value;
+    g('h-session').textContent  = '#' + g('session-num').value;
+  }
+
+  function setStatus(type, label) {
+    const pill = g('status-pill');
+    const dot  = g('status-dot');
+    const ring = g('avatar-ring');
+
+    pill.className = 'status-pill ' + type;
+    dot.className  = 'status-dot';
+    ring.className = 'avatar-ring';
+    g('status-text').textContent = label;
+
+    if (type === 'connect' || type === 'listening') dot.classList.add('blink');
+    if (type === 'speaking') { ring.classList.add('pulse-speak'); dot.classList.add('blink'); }
+    if (type === 'listening') ring.classList.add('pulse-listen');
+  }
+
+  function setWaveform(mode) {
+    const wf = g('waveform');
+    wf.className = 'waveform ' + (mode || '');
+  }
+
+  function setMsg(text) {
+    g('agent-msg').textContent = text;
+  }
+
+  function startTimer() {
+    timerInterval = setInterval(() => {
+      sessionSecs++;
+      const m = Math.floor(sessionSecs / 60);
+      const s = sessionSecs % 60;
+      g('clock').textContent = `${m}:${String(s).padStart(2,'0')}`;
+    }, 1000);
+  }
+
+  function stopTimer() {
+    clearInterval(timerInterval);
+    timerInterval = null;
+  }
+
+</script>
+</body>
+</html>
