@@ -507,6 +507,12 @@
       justify-content: center;
     }
 
+    .convai-widget-wrap {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
     .btn-end {
       padding: 0.65rem 1.75rem;
       border: 2px solid var(--border);
@@ -1436,6 +1442,10 @@
         Connecting to your Trial Companion…
       </div>
 
+      <div class="convai-widget-wrap">
+        <elevenlabs-convai agent-id="agent_2001kmtzccd4f4e8k7amrqvcxh0a"></elevenlabs-convai>
+      </div>
+
       <button class="btn-end" id="btn-end" onclick="endSession()">
         End Session
       </button>
@@ -1699,6 +1709,12 @@
     </button>
   </div>
 </div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     ELEVENLABS CONVAI WIDGET
+═══════════════════════════════════════════════════════════ -->
+<script src="https://unpkg.com/@elevenlabs/convai-widget-embed" async type="text/javascript"></script>
 
 
 <!-- ═══════════════════════════════════════════════════════════
