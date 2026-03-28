@@ -11,17 +11,19 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --primary:       #0F766E;
-      --primary-light: #CCFBF1;
-      --primary-dark:  #0C3D38;
-      --accent:        #7C3AED;
+      --primary:       #6366F1;
+      --primary-light: #E0E7FF;
+      --primary-dark:  #312E81;
+      --primary-mid:   #4F46E5;
+      --accent:        #818CF8;
       --danger:        #DC2626;
       --success:       #059669;
       --warning:       #D97706;
-      --text:          #0F172A;
-      --text-muted:    #64748B;
-      --border:        #E2E8F0;
-      --bg:            #F8FAFC;
+      --text:          #1E1B4B;
+      --text-muted:    #6B7280;
+      --border:        #E5E7EB;
+      --bg:            #F5F3FF;
+      --bg-deep:       #EEF2FF;
       --card:          #FFFFFF;
     }
 
@@ -34,132 +36,172 @@
 
     [hidden] { display: none !important; }
 
-    /* ─── SETUP SCREEN ─────────────────────────────────────────── */
-    #setup-screen {
+    /* ─── WELCOME / LANDING SCREEN ───────────────────────────── */
+    #welcome-screen {
       min-height: 100vh;
+      background: linear-gradient(145deg, #4338CA 0%, #6366F1 40%, #818CF8 100%);
       display: flex;
       align-items: center;
       justify-content: center;
       padding: 2rem;
-      background: linear-gradient(145deg, #0C3D38 0%, #0F766E 55%, #0891B2 100%);
     }
 
-    .setup-card {
-      background: white;
-      border-radius: 24px;
-      padding: 2.75rem;
-      max-width: 540px;
+    .welcome-container {
+      max-width: 900px;
       width: 100%;
-      box-shadow: 0 30px 60px rgba(0,0,0,0.2);
     }
 
-    .brand {
+    .welcome-header {
       display: flex;
-      flex-direction: column;
       align-items: center;
-      text-align: center;
-      margin-bottom: 2rem;
+      gap: 1.25rem;
+      margin-bottom: 2.25rem;
     }
 
-    .brand-mark {
-      width: 68px;
-      height: 68px;
-      border-radius: 18px;
-      background: linear-gradient(135deg, #0F766E, #0891B2);
+    .welcome-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, #A5B4FC, #C7D2FE);
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-bottom: 1rem;
-      box-shadow: 0 8px 20px rgba(15,118,110,0.35);
-    }
-
-    .brand-mark svg { width: 36px; height: 36px; }
-
-    .brand-name {
       font-size: 1.75rem;
       font-weight: 700;
       color: var(--primary-dark);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+      flex-shrink: 0;
+    }
+
+    .welcome-text h1 {
+      font-size: 2rem;
+      font-weight: 700;
+      color: white;
       letter-spacing: -0.02em;
     }
 
-    .brand-tagline {
-      font-size: 0.875rem;
-      color: var(--text-muted);
+    .welcome-text p {
+      font-size: 0.9375rem;
+      color: rgba(255,255,255,0.7);
       margin-top: 0.25rem;
     }
 
-    .form-label {
-      display: block;
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 0.5rem;
+    .welcome-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
     }
 
-    .form-input {
-      width: 100%;
-      padding: 0.7rem 1rem;
-      border: 2px solid var(--border);
-      border-radius: 10px;
-      font-family: inherit;
-      font-size: 0.9375rem;
-      color: var(--text);
-      outline: none;
-      transition: border-color 0.2s;
+    .welcome-card {
+      background: white;
+      border-radius: 18px;
+      padding: 1.75rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+      transition: transform 0.2s, box-shadow 0.2s;
     }
 
-    .form-input:focus { border-color: var(--primary); }
-    .form-input.mono { font-family: 'Courier New', monospace; font-size: 0.875rem; letter-spacing: 0.03em; }
+    .welcome-card:hover { transform: translateY(-2px); box-shadow: 0 12px 40px rgba(0,0,0,0.14); }
 
-    .form-hint {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      margin-top: 0.375rem;
-    }
+    .welcome-card.span-2 { grid-column: 1 / -1; }
 
-    .form-group { margin-bottom: 1.125rem; }
-
-    .rule {
-      border: none;
-      border-top: 1px solid var(--border);
-      margin: 1.5rem 0;
-    }
-
-    .section-label {
-      font-size: 0.75rem;
-      font-weight: 700;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
-      margin-bottom: 1rem;
+    .wc-header {
       display: flex;
       align-items: center;
-      gap: 0.5rem;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
     }
 
-    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    .wc-icon {
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
 
-    .btn-primary {
+    .wc-icon.purple { background: var(--primary-light); }
+    .wc-icon.green  { background: #D1FAE5; }
+    .wc-icon.amber  { background: #FEF3C7; }
+    .wc-icon.blue   { background: #DBEAFE; }
+
+    .wc-icon svg { width: 22px; height: 22px; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+    .wc-icon.purple svg { stroke: var(--primary); }
+    .wc-icon.green svg  { stroke: #059669; }
+    .wc-icon.amber svg  { stroke: #D97706; }
+    .wc-icon.blue svg   { stroke: #2563EB; }
+
+    .wc-title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .wc-subtitle {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      margin-top: 0.125rem;
+    }
+
+    .session-start-area {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      padding: 1rem 0 0.5rem;
+    }
+
+    .session-info-row {
+      display: flex;
+      gap: 2rem;
+      justify-content: center;
+    }
+
+    .session-info-item {
+      text-align: center;
+    }
+
+    .session-info-item .label {
+      font-size: 0.625rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+
+    .session-info-item .value {
+      font-size: 0.9375rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-top: 0.125rem;
+    }
+
+    .btn-start {
       width: 100%;
-      padding: 0.9rem 1.5rem;
-      background: linear-gradient(135deg, #0F766E, #0891B2);
+      padding: 1rem 1.5rem;
+      background: linear-gradient(135deg, #4F46E5, #6366F1);
       color: white;
       border: none;
-      border-radius: 12px;
+      border-radius: 14px;
       font-family: inherit;
-      font-size: 1rem;
-      font-weight: 600;
+      font-size: 1.0625rem;
+      font-weight: 700;
       cursor: pointer;
       transition: opacity 0.2s, transform 0.1s;
-      margin-top: 0.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.625rem;
+      box-shadow: 0 4px 14px rgba(79,70,229,0.4);
     }
 
-    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
-    .btn-primary:active { transform: translateY(0); opacity: 1; }
+    .btn-start:hover { opacity: 0.92; transform: translateY(-1px); }
+    .btn-start:active { transform: translateY(0); }
 
-    .btn-demo {
+    .btn-start svg { width: 22px; height: 22px; fill: white; }
+
+    .btn-demo-welcome {
       width: 100%;
       padding: 0.7rem 1.5rem;
       background: transparent;
@@ -171,10 +213,69 @@
       font-weight: 600;
       cursor: pointer;
       transition: all 0.2s;
-      margin-top: 0.625rem;
+      margin-top: 0.25rem;
     }
 
-    .btn-demo:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+    .btn-demo-welcome:hover { border-color: var(--primary); color: var(--primary); background: var(--primary-light); }
+
+    .past-session-row {
+      display: flex;
+      align-items: center;
+      gap: 0.875rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid #F3F4F6;
+    }
+
+    .past-session-row:last-child { border-bottom: none; }
+
+    .ps-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+
+    .ps-dot.complete { background: var(--success); }
+    .ps-dot.alert    { background: var(--warning); }
+
+    .ps-info { flex: 1; }
+
+    .ps-title {
+      font-size: 0.8125rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .ps-meta {
+      font-size: 0.6875rem;
+      color: var(--text-muted);
+      margin-top: 0.1rem;
+    }
+
+    .ps-score {
+      font-size: 0.8125rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .quick-stat {
+      text-align: center;
+      padding: 0.5rem;
+    }
+
+    .quick-stat .qs-val {
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .quick-stat .qs-label {
+      font-size: 0.6875rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-top: 0.125rem;
+    }
 
     /* ─── APP HEADER ────────────────────────────────────────────── */
     .app-header {
@@ -197,7 +298,7 @@
       width: 32px;
       height: 32px;
       border-radius: 8px;
-      background: linear-gradient(135deg, #0F766E, #0891B2);
+      background: linear-gradient(135deg, #6366F1, #818CF8);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -219,9 +320,7 @@
       gap: 1.75rem;
     }
 
-    .h-meta-item {
-      text-align: right;
-    }
+    .h-meta-item { text-align: right; }
 
     .h-meta-label {
       font-size: 0.625rem;
@@ -274,11 +373,11 @@
       position: absolute;
       inset: 0;
       border-radius: 50%;
-      background: rgba(15,118,110,0.08);
+      background: rgba(99,102,241,0.08);
     }
 
     .avatar-ring.pulse-speak { animation: pulse-speak 1.6s ease-in-out infinite; }
-    .avatar-ring.pulse-listen { animation: pulse-listen 2s ease-in-out infinite; background: rgba(124,58,237,0.08); }
+    .avatar-ring.pulse-listen { animation: pulse-listen 2s ease-in-out infinite; background: rgba(129,140,248,0.12); }
 
     @keyframes pulse-speak {
       0%, 100% { transform: scale(1); opacity: 0.7; }
@@ -296,7 +395,7 @@
       width: 148px;
       height: 148px;
       border-radius: 50%;
-      background: linear-gradient(145deg, #E0F2FE, var(--primary-light));
+      background: linear-gradient(145deg, #E0E7FF, #C7D2FE);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -306,7 +405,7 @@
       width: 72px;
       height: 72px;
       border-radius: 50%;
-      background: linear-gradient(135deg, #0F766E, #0891B2);
+      background: linear-gradient(135deg, #4F46E5, #6366F1);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -334,7 +433,7 @@
     .status-pill.idle     { background: #F1F5F9; color: var(--text-muted); }
     .status-pill.connect  { background: #FEF3C7; color: #92400E; }
     .status-pill.speaking { background: var(--primary-light); color: var(--primary-dark); }
-    .status-pill.listening{ background: #EDE9FE; color: #5B21B6; }
+    .status-pill.listening{ background: #E0E7FF; color: #3730A3; }
     .status-pill.ended    { background: #F1F5F9; color: var(--text-muted); }
     .status-pill.error    { background: #FEF2F2; color: var(--danger); }
 
@@ -357,7 +456,6 @@
       font-variant-numeric: tabular-nums;
     }
 
-    /* Waveform */
     .waveform {
       display: flex;
       align-items: center;
@@ -424,16 +522,6 @@
 
     .btn-end:hover:not(:disabled) { border-color: var(--danger); color: var(--danger); background: #FEF2F2; }
     .btn-end:disabled { opacity: 0.4; cursor: default; }
-    .btn-start-new {
-      border-color: var(--primary);
-      color: var(--primary-dark);
-      background: #ECFEFF;
-    }
-    .btn-start-new:hover {
-      border-color: var(--primary);
-      color: var(--primary-dark);
-      background: #CCFBF1;
-    }
 
     /* ─── ePRO PANEL ────────────────────────────────────────────── */
     .epro-panel {
@@ -441,7 +529,7 @@
       flex-direction: column;
       gap: 0.875rem;
       padding: 1.25rem;
-      background: var(--bg);
+      background: var(--bg-deep);
       overflow-y: auto;
     }
 
@@ -467,9 +555,9 @@
 
     .epro-card {
       background: white;
-      border-radius: 12px;
+      border-radius: 14px;
       padding: 1.125rem;
-      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+      box-shadow: 0 1px 4px rgba(0,0,0,0.05);
     }
 
     .card-label {
@@ -506,8 +594,6 @@
 
     .metric-list { display: flex; flex-direction: column; gap: 0.8rem; }
 
-    .metric-item {}
-
     .metric-row-top {
       display: flex;
       justify-content: space-between;
@@ -517,7 +603,6 @@
 
     .metric-name { font-size: 0.8125rem; font-weight: 500; color: var(--text); }
     .metric-val  { font-size: 0.8125rem; font-weight: 700; color: var(--primary); }
-    .metric-val.empty { color: var(--border); }
 
     .bar-bg {
       height: 6px;
@@ -556,7 +641,7 @@
     #safety-modal {
       position: fixed;
       inset: 0;
-      background: rgba(10, 10, 20, 0.72);
+      background: rgba(10, 10, 30, 0.72);
       backdrop-filter: blur(6px);
       display: flex;
       align-items: center;
@@ -719,66 +804,556 @@
 
     .btn-demo-action:hover { opacity: 0.85; }
     .btn-demo-action.danger { background: #EF4444; }
+
+    /* ─── POST-SESSION DASHBOARD ──────────────────────────────── */
+    #postsession-screen {
+      min-height: 100vh;
+      background: linear-gradient(145deg, #4338CA 0%, #6366F1 40%, #818CF8 100%);
+      padding: 2rem;
+    }
+
+    .ps-container {
+      max-width: 960px;
+      margin: 0 auto;
+    }
+
+    .ps-top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.75rem;
+    }
+
+    .ps-top-left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .ps-top-brand {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: white;
+    }
+
+    .ps-top-brand span { color: rgba(255,255,255,0.5); font-weight: 400; }
+
+    .btn-back-home {
+      padding: 0.5rem 1.25rem;
+      background: rgba(255,255,255,0.15);
+      backdrop-filter: blur(8px);
+      color: white;
+      border: 1px solid rgba(255,255,255,0.25);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-back-home:hover { background: rgba(255,255,255,0.25); }
+
+    .ps-summary-banner {
+      background: white;
+      border-radius: 18px;
+      padding: 1.5rem 2rem;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+    }
+
+    .ps-check-circle {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: #D1FAE5;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .ps-check-circle svg { width: 28px; height: 28px; stroke: #059669; fill: none; stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+
+    .ps-summary-info { flex: 1; }
+
+    .ps-summary-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .ps-summary-sub {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      margin-top: 0.25rem;
+    }
+
+    .ps-summary-stats {
+      display: flex;
+      gap: 2rem;
+    }
+
+    .ps-stat {
+      text-align: center;
+    }
+
+    .ps-stat-val {
+      font-size: 1.375rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    .ps-stat-label {
+      font-size: 0.625rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-muted);
+    }
+
+    .ps-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.25rem;
+    }
+
+    .ps-card {
+      background: white;
+      border-radius: 16px;
+      padding: 1.5rem;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+    }
+
+    .ps-card.span-2 { grid-column: 1 / -1; }
+
+    .ps-card-header {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-bottom: 1rem;
+    }
+
+    .ps-card-icon {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+
+    .ps-card-icon.purple { background: var(--primary-light); }
+    .ps-card-icon.blue   { background: #DBEAFE; }
+    .ps-card-icon.green  { background: #D1FAE5; }
+    .ps-card-icon.amber  { background: #FEF3C7; }
+
+    .ps-card-icon svg { width: 20px; height: 20px; fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+    .ps-card-icon.purple svg { stroke: var(--primary); }
+    .ps-card-icon.blue svg   { stroke: #2563EB; }
+    .ps-card-icon.green svg  { stroke: #059669; }
+    .ps-card-icon.amber svg  { stroke: #D97706; }
+
+    .ps-card-title {
+      font-size: 0.9375rem;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .ps-metric-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #F3F4F6;
+    }
+
+    .ps-metric-row:last-child { border-bottom: none; }
+
+    .ps-metric-name {
+      font-size: 0.8125rem;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .ps-metric-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .ps-mini-bar {
+      width: 80px;
+      height: 5px;
+      background: #F3F4F6;
+      border-radius: 3px;
+      overflow: hidden;
+    }
+
+    .ps-mini-fill {
+      height: 100%;
+      border-radius: 3px;
+      transition: width 1s ease;
+    }
+
+    .ps-metric-val {
+      font-size: 0.75rem;
+      font-weight: 700;
+      color: var(--primary);
+      min-width: 28px;
+      text-align: right;
+    }
+
+    .ps-notes-text {
+      font-size: 0.8125rem;
+      color: var(--text);
+      line-height: 1.65;
+    }
+
+    .ps-action-btn {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      background: white;
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-align: left;
+    }
+
+    .ps-action-btn:hover { border-color: var(--primary); background: var(--primary-light); color: var(--primary-dark); }
+
+    .ps-action-btn + .ps-action-btn { margin-top: 0.625rem; }
+
+    .ps-action-btn svg { width: 20px; height: 20px; flex-shrink: 0; stroke: var(--primary); fill: none; stroke-width: 1.75; stroke-linecap: round; stroke-linejoin: round; }
+
+    .ps-action-desc {
+      font-size: 0.6875rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .star-row {
+      display: flex;
+      gap: 0.375rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .star-btn {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0.125rem;
+      transition: transform 0.15s;
+    }
+
+    .star-btn:hover { transform: scale(1.15); }
+
+    .star-btn svg {
+      width: 28px;
+      height: 28px;
+      stroke: #D1D5DB;
+      fill: none;
+      stroke-width: 1.75;
+      transition: all 0.2s;
+    }
+
+    .star-btn.active svg { stroke: #F59E0B; fill: #F59E0B; }
+
+    .feedback-textarea {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.8125rem;
+      color: var(--text);
+      resize: vertical;
+      min-height: 72px;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .feedback-textarea:focus { border-color: var(--primary); }
+
+    .btn-submit-feedback {
+      margin-top: 0.75rem;
+      padding: 0.625rem 1.5rem;
+      background: linear-gradient(135deg, #4F46E5, #6366F1);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.8125rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .btn-submit-feedback:hover { opacity: 0.9; }
+
+    /* ─── MESSAGE MODAL ─────────────────────────────────────────── */
+    #message-modal {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 10, 30, 0.72);
+      backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      padding: 2rem;
+    }
+
+    .message-card {
+      background: white;
+      border-radius: 22px;
+      padding: 2rem;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 32px 64px rgba(0,0,0,0.28);
+      animation: modal-in 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .message-card h3 {
+      font-size: 1.125rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+
+    .message-card .subtitle {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+      margin-bottom: 1.25rem;
+    }
+
+    .message-textarea {
+      width: 100%;
+      padding: 0.875rem 1rem;
+      border: 2px solid var(--border);
+      border-radius: 12px;
+      font-family: inherit;
+      font-size: 0.875rem;
+      color: var(--text);
+      resize: vertical;
+      min-height: 120px;
+      outline: none;
+      transition: border-color 0.2s;
+      margin-bottom: 1rem;
+    }
+
+    .message-textarea:focus { border-color: var(--primary); }
+
+    .message-actions {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: flex-end;
+    }
+
+    .btn-msg-cancel {
+      padding: 0.65rem 1.25rem;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      background: transparent;
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .btn-msg-cancel:hover { border-color: var(--text-muted); }
+
+    .btn-msg-send {
+      padding: 0.65rem 1.5rem;
+      background: linear-gradient(135deg, #4F46E5, #6366F1);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.875rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: opacity 0.2s;
+    }
+
+    .btn-msg-send:hover { opacity: 0.9; }
+
+    .msg-sent-confirmation {
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    .msg-sent-confirmation svg { width: 48px; height: 48px; stroke: var(--success); fill: none; stroke-width: 2; margin-bottom: 0.75rem; }
+
+    .msg-sent-confirmation h4 {
+      font-size: 1.0625rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 0.25rem;
+    }
+
+    .msg-sent-confirmation p {
+      font-size: 0.8125rem;
+      color: var(--text-muted);
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.7rem 1rem;
+      border: 2px solid var(--border);
+      border-radius: 10px;
+      font-family: inherit;
+      font-size: 0.9375rem;
+      color: var(--text);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus { border-color: var(--primary); }
   </style>
 </head>
 <body>
 
+<!-- hidden patient config -->
+<input type="hidden" id="agent-id" value="agent_4701kmtqwp0efxgatzgtnp9krzhn" />
+<input type="hidden" id="patient-name" value="Billy" />
+<input type="hidden" id="trial-id" value="ILLUMINATE-1" />
+<input type="hidden" id="physician" value="Dr. Priya Mehta" />
+<input type="hidden" id="session-num" value="12" />
+
 <!-- ═══════════════════════════════════════════════════════════
-     SETUP SCREEN
+     WELCOME SCREEN
 ═══════════════════════════════════════════════════════════ -->
-<div id="setup-screen">
-  <div class="setup-card">
+<div id="welcome-screen">
+  <div class="welcome-container">
 
-    <div class="brand">
-      <div class="brand-mark">
-        <!-- Waveform / voice icon -->
-        <svg viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <rect x="4"  y="14" width="4" height="8"  rx="2" fill="white" opacity="0.7"/>
-          <rect x="10" y="10" width="4" height="16" rx="2" fill="white"/>
-          <rect x="16" y="6"  width="4" height="24" rx="2" fill="white"/>
-          <rect x="22" y="10" width="4" height="16" rx="2" fill="white"/>
-          <rect x="28" y="14" width="4" height="8"  rx="2" fill="white" opacity="0.7"/>
-        </svg>
-      </div>
-      <div class="brand-name">Trial Companion</div>
-      <div class="brand-tagline">Patient-Centered Voice ePRO for Clinical Trials</div>
-    </div>
-
-    <input type="hidden" id="agent-id" value="agent_4701kmtqwp0efxgatzgtnp9krzhn" />
-
-    <div class="section-label">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/>
-      </svg>
-      Patient Profile
-    </div>
-
-    <div class="grid-2">
-      <div class="form-group">
-        <label class="form-label">Patient Name</label>
-        <input type="text" id="patient-name" class="form-input" value="Sarah Chen" />
-      </div>
-      <div class="form-group">
-        <label class="form-label">Trial ID</label>
-        <input type="text" id="trial-id" class="form-input" value="ILLUMINATE-1" />
-      </div>
-      <div class="form-group">
-        <label class="form-label">Supervising Physician</label>
-        <input type="text" id="physician" class="form-input" value="Dr. Priya Mehta" />
-      </div>
-      <div class="form-group">
-        <label class="form-label">Session #</label>
-        <input type="number" id="session-num" class="form-input" value="12" min="1" />
+    <div class="welcome-header">
+      <div class="welcome-avatar">B</div>
+      <div class="welcome-text">
+        <h1>Welcome back, Billy!</h1>
+        <p>Your next check-in is ready. Here's your overview.</p>
       </div>
     </div>
 
-    <button class="btn-primary" onclick="startLiveSession()">
-      Start Session →
-    </button>
-    <button class="btn-demo" onclick="startDemoMode()">
-      ✦ Run Demo Mode
-    </button>
+    <div class="welcome-grid">
 
+      <!-- Start Session Card -->
+      <div class="welcome-card">
+        <div class="wc-header">
+          <div class="wc-icon purple">
+            <svg viewBox="0 0 24 24"><path d="M12 1a4 4 0 0 0-4 4v7a4 4 0 0 0 8 0V5a4 4 0 0 0-4-4z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>
+          </div>
+          <div>
+            <div class="wc-title">Start Check-in Session</div>
+            <div class="wc-subtitle">Session #12 · ILLUMINATE-1</div>
+          </div>
+        </div>
+
+        <div class="session-info-row" style="margin-bottom:1rem;">
+          <div class="session-info-item">
+            <div class="label">Trial</div>
+            <div class="value">ILLUMINATE-1</div>
+          </div>
+          <div class="session-info-item">
+            <div class="label">Physician</div>
+            <div class="value">Dr. Priya Mehta</div>
+          </div>
+          <div class="session-info-item">
+            <div class="label">Session</div>
+            <div class="value">#12</div>
+          </div>
+        </div>
+
+        <button class="btn-start" onclick="startLiveSession()">
+          <svg viewBox="0 0 24 24"><path d="M12 1a4 4 0 0 0-4 4v7a4 4 0 0 0 8 0V5a4 4 0 0 0-4-4z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/></svg>
+          Start Session
+        </button>
+        <button class="btn-demo-welcome" onclick="startDemoMode()">
+          ✦ Run Demo Mode
+        </button>
+      </div>
+
+      <!-- Quick Stats Card -->
+      <div class="welcome-card">
+        <div class="wc-header">
+          <div class="wc-icon green">
+            <svg viewBox="0 0 24 24"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+          </div>
+          <div>
+            <div class="wc-title">Your Progress</div>
+            <div class="wc-subtitle">Trial participation at a glance</div>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:0.5rem;">
+          <div class="quick-stat">
+            <div class="qs-val">11</div>
+            <div class="qs-label">Sessions Done</div>
+          </div>
+          <div class="quick-stat">
+            <div class="qs-val" style="color:#059669;">100%</div>
+            <div class="qs-label">Compliance</div>
+          </div>
+          <div class="quick-stat">
+            <div class="qs-val">42</div>
+            <div class="qs-label">Trial Day</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Recent Sessions Card -->
+      <div class="welcome-card span-2">
+        <div class="wc-header">
+          <div class="wc-icon amber">
+            <svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <div class="wc-title">Recent Sessions</div>
+            <div class="wc-subtitle">Your last 3 check-ins</div>
+          </div>
+        </div>
+
+        <div class="past-session-row">
+          <div class="ps-dot complete"></div>
+          <div class="ps-info">
+            <div class="ps-title">Session #11 — Completed</div>
+            <div class="ps-meta">Mar 21, 2026 · Duration: 4:32 · Dr. Priya Mehta</div>
+          </div>
+          <div class="ps-score">Fatigue 6/10</div>
+        </div>
+        <div class="past-session-row">
+          <div class="ps-dot complete"></div>
+          <div class="ps-info">
+            <div class="ps-title">Session #10 — Completed</div>
+            <div class="ps-meta">Mar 14, 2026 · Duration: 3:58 · Dr. Priya Mehta</div>
+          </div>
+          <div class="ps-score">Fatigue 5/10</div>
+        </div>
+        <div class="past-session-row">
+          <div class="ps-dot alert"></div>
+          <div class="ps-info">
+            <div class="ps-title">Session #9 — Safety Alert</div>
+            <div class="ps-meta">Mar 7, 2026 · Duration: 6:12 · Dr. Priya Mehta</div>
+          </div>
+          <div class="ps-score">Fatigue 8/10</div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </div>
 
@@ -788,7 +1363,6 @@
 ═══════════════════════════════════════════════════════════ -->
 <div id="session-screen" hidden>
 
-  <!-- Header -->
   <header class="app-header">
     <div class="h-brand">
       <div class="h-brand-mark">
@@ -822,7 +1396,6 @@
     </div>
   </header>
 
-  <!-- Demo banner (hidden in live mode) -->
   <div id="demo-strip" class="demo-strip" hidden>
     ✦ Demo Mode — simulating a patient session for Trial Companion
     <div class="demo-strip-actions">
@@ -831,17 +1404,13 @@
     </div>
   </div>
 
-  <!-- Body -->
   <div class="session-body">
 
-    <!-- Agent panel -->
     <div class="agent-panel">
-
       <div class="avatar-wrap">
         <div class="avatar-ring" id="avatar-ring"></div>
         <div class="avatar-body">
           <div class="avatar-icon">
-            <!-- Microphone icon -->
             <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
               <path d="M12 1a4 4 0 0 0-4 4v7a4 4 0 0 0 8 0V5a4 4 0 0 0-4-4zm-6 10a6 6 0 0 0 5 5.92V19H9v2h6v-2h-2v-2.08A6 6 0 0 0 18 11h-2a4 4 0 0 1-8 0H6z"/>
             </svg>
@@ -870,21 +1439,16 @@
       <button class="btn-end" id="btn-end" onclick="endSession()">
         End Session
       </button>
-
     </div>
 
-    <!-- ePRO panel -->
     <div class="epro-panel">
-
       <div class="epro-top">
         <div class="epro-heading">ePRO Data Capture</div>
         <div class="badge pending" id="epro-badge">Pending</div>
       </div>
 
-      <!-- Metrics card -->
       <div class="epro-card">
         <div class="card-label">FACIT-Fatigue Scale (Adapted)</div>
-
         <div id="metrics-empty" class="empty-hint">
           <div class="empty-hint-icon">
             <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
@@ -893,23 +1457,19 @@
           </div>
           <p>Data populates after session completes</p>
         </div>
-
         <div id="metrics-data" class="metric-list" style="display:none"></div>
       </div>
 
-      <!-- Notes card -->
       <div class="epro-card">
         <div class="card-label">Clinical Notes</div>
         <div class="notes-text empty" id="notes-text">Notable concerns will appear here once the session is complete.</div>
       </div>
 
-      <!-- Summary card (hidden until data arrives) -->
       <div class="epro-card" id="summary-card" hidden>
         <div class="card-label">Session Summary</div>
         <div class="notes-text" id="summary-text"></div>
       </div>
 
-      <!-- Session info card -->
       <div class="epro-card">
         <div class="card-label">Session Info</div>
         <div class="info-rows">
@@ -919,7 +1479,147 @@
           <div class="info-row"><span class="info-key">Modality</span><span class="info-val">Voice (Conversational AI)</span></div>
         </div>
       </div>
+    </div>
+  </div>
+</div>
 
+
+<!-- ═══════════════════════════════════════════════════════════
+     POST-SESSION DASHBOARD
+═══════════════════════════════════════════════════════════ -->
+<div id="postsession-screen" hidden>
+  <div class="ps-container">
+
+    <div class="ps-top-bar">
+      <div class="ps-top-left">
+        <div class="ps-top-brand">Trial Companion <span>| Session Review</span></div>
+      </div>
+      <button class="btn-back-home" onclick="goHome()">← Back to Home</button>
+    </div>
+
+    <div class="ps-summary-banner">
+      <div class="ps-check-circle">
+        <svg viewBox="0 0 24 24"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="ps-summary-info">
+        <div class="ps-summary-title">Session #<span id="ps-session-num">12</span> Complete</div>
+        <div class="ps-summary-sub">Great job, Billy! Your data has been securely recorded.</div>
+      </div>
+      <div class="ps-summary-stats">
+        <div class="ps-stat">
+          <div class="ps-stat-val" id="ps-duration">—</div>
+          <div class="ps-stat-label">Duration</div>
+        </div>
+        <div class="ps-stat">
+          <div class="ps-stat-val" style="color:#059669;">✓</div>
+          <div class="ps-stat-label">Submitted</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ps-grid">
+
+      <!-- Session Metrics -->
+      <div class="ps-card">
+        <div class="ps-card-header">
+          <div class="ps-card-icon purple">
+            <svg viewBox="0 0 24 24"><path d="M3 13.125C3 12.504 3.504 12 4.125 12h2.25c.621 0 1.125.504 1.125 1.125v6.75C7.5 20.496 6.996 21 6.375 21h-2.25A1.125 1.125 0 013 19.875v-6.75z"/><path d="M9.75 8.625c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125v11.25c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V8.625z"/><path d="M16.5 4.125c0-.621.504-1.125 1.125-1.125h2.25C20.496 3 21 3.504 21 4.125v15.75c0 .621-.504 1.125-1.125 1.125h-2.25a1.125 1.125 0 01-1.125-1.125V4.125z"/></svg>
+          </div>
+          <div class="ps-card-title">Session Metrics</div>
+        </div>
+        <div id="ps-metrics-list"></div>
+      </div>
+
+      <!-- Actions Card -->
+      <div class="ps-card">
+        <div class="ps-card-header">
+          <div class="ps-card-icon blue">
+            <svg viewBox="0 0 24 24"><path d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+          </div>
+          <div class="ps-card-title">Actions</div>
+        </div>
+
+        <button class="ps-action-btn" onclick="openMessageModal()">
+          <svg viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
+          <div>
+            Message Care Team
+            <div class="ps-action-desc">Send a note to Dr. Priya Mehta or your care team</div>
+          </div>
+        </button>
+
+        <button class="ps-action-btn" onclick="goHome()">
+          <svg viewBox="0 0 24 24"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-4 0a1 1 0 01-1-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 01-1 1"/></svg>
+          <div>
+            Return Home
+            <div class="ps-action-desc">Go back to your dashboard</div>
+          </div>
+        </button>
+
+        <button class="ps-action-btn" onclick="startLiveSession()">
+          <svg viewBox="0 0 24 24"><path d="M12 1a4 4 0 0 0-4 4v7a4 4 0 0 0 8 0V5a4 4 0 0 0-4-4z"/><path d="M19 10v1a7 7 0 0 1-14 0v-1"/></svg>
+          <div>
+            Start Another Session
+            <div class="ps-action-desc">Begin a new check-in conversation</div>
+          </div>
+        </button>
+      </div>
+
+      <!-- Clinical Notes -->
+      <div class="ps-card">
+        <div class="ps-card-header">
+          <div class="ps-card-icon green">
+            <svg viewBox="0 0 24 24"><path d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+          </div>
+          <div class="ps-card-title">Clinical Notes</div>
+        </div>
+        <div class="ps-notes-text" id="ps-notes">—</div>
+      </div>
+
+      <!-- Feedback Card -->
+      <div class="ps-card">
+        <div class="ps-card-header">
+          <div class="ps-card-icon amber">
+            <svg viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg>
+          </div>
+          <div class="ps-card-title">Rate Your Experience</div>
+        </div>
+
+        <div class="star-row" id="star-row">
+          <button class="star-btn" data-val="1" onclick="setRating(1)"><svg viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg></button>
+          <button class="star-btn" data-val="2" onclick="setRating(2)"><svg viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg></button>
+          <button class="star-btn" data-val="3" onclick="setRating(3)"><svg viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg></button>
+          <button class="star-btn" data-val="4" onclick="setRating(4)"><svg viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg></button>
+          <button class="star-btn" data-val="5" onclick="setRating(5)"><svg viewBox="0 0 24 24"><path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"/></svg></button>
+        </div>
+        <textarea class="feedback-textarea" id="feedback-text" placeholder="Share your thoughts on this session, your care team, or the trial experience…"></textarea>
+        <button class="btn-submit-feedback" onclick="submitFeedback()">Submit Feedback</button>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ═══════════════════════════════════════════════════════════
+     MESSAGE MODAL
+═══════════════════════════════════════════════════════════ -->
+<div id="message-modal" hidden>
+  <div class="message-card">
+    <div id="msg-compose">
+      <h3>Message Your Care Team</h3>
+      <p class="subtitle">Your message will be sent to Dr. Priya Mehta and the ILLUMINATE-1 care team.</p>
+      <textarea class="message-textarea" id="msg-textarea" placeholder="Type your message here…"></textarea>
+      <div class="message-actions">
+        <button class="btn-msg-cancel" onclick="closeMessageModal()">Cancel</button>
+        <button class="btn-msg-send" onclick="sendMessage()">Send Message</button>
+      </div>
+    </div>
+    <div id="msg-sent" class="msg-sent-confirmation" hidden>
+      <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round"><path d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      <h4>Message Sent!</h4>
+      <p>Your care team will review your message and respond soon.</p>
+      <br/>
+      <button class="btn-msg-cancel" onclick="closeMessageModal()">Close</button>
     </div>
   </div>
 </div>
@@ -930,7 +1630,6 @@
 ═══════════════════════════════════════════════════════════ -->
 <div id="safety-modal" hidden>
   <div class="safety-card">
-
     <div class="safety-head">
       <div class="safety-icon-wrap">
         <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
@@ -948,7 +1647,6 @@
     </div>
 
     <div class="notif-list">
-
       <div class="notif-item" id="notif-doc">
         <div class="notif-ico doc">
           <svg viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
@@ -987,7 +1685,6 @@
         </div>
         <div class="notif-time" id="notif-crisis-time">Active</div>
       </div>
-
     </div>
 
     <div class="resources-box">
@@ -1000,7 +1697,6 @@
     <button class="btn-dismiss" onclick="dismissAlert()">
       Acknowledge &amp; Continue Monitoring
     </button>
-
   </div>
 </div>
 
@@ -1011,24 +1707,43 @@
 <script type="module">
 
   /* ── State ─────────────────────────────────────────────── */
-  let conversation  = null;
-  let timerInterval = null;
-  let sessionSecs   = 0;
-  let isDemoMode    = false;
+  let conversation   = null;
+  let timerInterval  = null;
+  let sessionSecs    = 0;
+  let isDemoMode     = false;
+  let lastSessionData = null;
 
-  /* ── Helpers: expose to inline onclick handlers ─────────── */
+  /* ── Helpers ────────────────────────────────────────────── */
   const g = (id) => document.getElementById(id);
+
   window.startLiveSession  = startLiveSession;
   window.startDemoMode     = startDemoMode;
   window.endSession        = endSession;
   window.dismissAlert      = dismissAlert;
   window.demoFillData      = demoFillData;
   window.demoTriggerAlert  = demoTriggerAlert;
+  window.goHome            = goHome;
+  window.openMessageModal  = openMessageModal;
+  window.closeMessageModal = closeMessageModal;
+  window.sendMessage       = sendMessage;
+  window.setRating         = setRating;
+  window.submitFeedback    = submitFeedback;
 
   /* ── Boot ──────────────────────────────────────────────── */
   g('info-date').textContent = new Date().toLocaleDateString('en-US', {
     weekday: 'short', year: 'numeric', month: 'short', day: 'numeric'
   });
+
+  /* ── Screen management ─────────────────────────────────── */
+  function switchScreen(screen) {
+    g('welcome-screen').hidden     = screen !== 'welcome';
+    g('session-screen').hidden     = screen !== 'session';
+    g('postsession-screen').hidden = screen !== 'postsession';
+  }
+
+  function goHome() {
+    switchScreen('welcome');
+  }
 
   /* ── Start live session ────────────────────────────────── */
   async function startLiveSession() {
@@ -1038,6 +1753,7 @@
       return;
     }
     isDemoMode = false;
+    resetSessionUI();
     populateHeader();
     switchScreen('session');
     setStatus('connect', 'Connecting…');
@@ -1070,13 +1786,14 @@
   /* ── Demo mode ─────────────────────────────────────────── */
   function startDemoMode() {
     isDemoMode = true;
+    resetSessionUI();
     populateHeader();
     switchScreen('session');
     g('demo-strip').hidden = false;
     setStatus('speaking', 'Agent Speaking');
     setWaveform('speak');
     startTimer();
-    setMsg('"Hello Sarah — I\'m your Trial Companion. How have you been feeling since our last check-in?"');
+    setMsg('"Hello Billy — I\'m your Trial Companion. How have you been feeling since our last check-in?"');
     setTimeout(() => { setStatus('listening','Listening…'); setWaveform('listen'); setMsg('Listening to patient response…'); }, 4500);
   }
 
@@ -1090,7 +1807,7 @@
       pain_level:      4,
       activity_level:  7,
       notable_concerns: 'Patient reports increased fatigue since the most recent chemotherapy cycle (Day 42). Sleep quality has declined, waking 2–3 times per night. Mild nausea managed with current anti-emetics. Reports feeling emotionally drained but coping.',
-      session_summary:  'Sarah completed her 12th check-in session. Key finding: fatigue and sleep disruption have worsened since last cycle, correlating with reported activity limitation. No red flags identified. Data submitted to ILLUMINATE-1 EDC.'
+      session_summary:  'Billy completed his 12th check-in session. Key finding: fatigue and sleep disruption have worsened since last cycle, correlating with reported activity limitation. No red flags identified. Data submitted to ILLUMINATE-1 EDC.'
     });
   }
 
@@ -1102,7 +1819,7 @@
     });
   }
 
-  /* ── End session ───────────────────────────────────────── */
+  /* ── End session → go to post-session dashboard ────────── */
   async function endSession() {
     if (conversation) {
       await conversation.endSession();
@@ -1110,40 +1827,65 @@
     }
     stopTimer();
     finalizeSession();
-    setStatus('ended', 'Session Ended');
-    setMsg('Session complete. Thank you, ' + g('patient-name').value + '. Your data has been securely recorded.');
+
     if (g('epro-badge').textContent.trim() === 'Pending') {
       demoFillData();
     }
-    g('btn-end').disabled = true;
-    g('btn-end').textContent = 'Session Complete';
-    showStartNewSessionButton();
+
+    setTimeout(() => showPostSession(), 600);
   }
 
   function finalizeSession() {
     g('info-duration').textContent = g('clock').textContent;
   }
 
-  function showStartNewSessionButton() {
-    const existing = g('btn-start-new-session');
-    if (existing) {
-      existing.hidden = false;
-      return;
+  function showPostSession() {
+    g('ps-session-num').textContent = g('session-num').value;
+    g('ps-duration').textContent = g('clock').textContent || '—';
+
+    const metricsList = g('ps-metrics-list');
+    metricsList.innerHTML = '';
+
+    if (lastSessionData) {
+      const metrics = [
+        { label: 'Fatigue Level',      val: lastSessionData.fatigue_score },
+        { label: 'Sleep Disruption',   val: lastSessionData.sleep_quality },
+        { label: 'Nausea',             val: lastSessionData.nausea_level },
+        { label: 'Appetite Impact',    val: lastSessionData.appetite },
+        { label: 'Emotional Distress', val: lastSessionData.mood_score },
+        { label: 'Pain Level',         val: lastSessionData.pain_level },
+        { label: 'Activity Limitation',val: lastSessionData.activity_level },
+      ];
+
+      metrics.forEach(m => {
+        const v = parseInt(m.val) || 0;
+        const pct = (v / 10) * 100;
+        const color = v <= 3 ? '#10B981' : v <= 6 ? '#F59E0B' : '#EF4444';
+        const row = document.createElement('div');
+        row.className = 'ps-metric-row';
+        row.innerHTML = `
+          <span class="ps-metric-name">${m.label}</span>
+          <div class="ps-metric-bar">
+            <div class="ps-mini-bar"><div class="ps-mini-fill" style="width:${pct}%;background:${color}"></div></div>
+            <span class="ps-metric-val">${v}/10</span>
+          </div>`;
+        metricsList.appendChild(row);
+      });
+
+      g('ps-notes').textContent = lastSessionData.notable_concerns || '—';
     }
-    const btn = document.createElement('button');
-    btn.id = 'btn-start-new-session';
-    btn.className = 'btn-end btn-start-new';
-    btn.textContent = 'Start New Session';
-    btn.addEventListener('click', resetToSetupScreen);
-    g('btn-end').insertAdjacentElement('afterend', btn);
+
+    document.querySelectorAll('.star-btn').forEach(b => b.classList.remove('active'));
+    g('feedback-text').value = '';
+    g('msg-textarea').value = '';
+    g('msg-compose').hidden = false;
+    g('msg-sent').hidden = true;
+
+    switchScreen('postsession');
   }
 
-  function resetToSetupScreen() {
-    stopTimer();
-    conversation = null;
-    isDemoMode = false;
+  function resetSessionUI() {
     sessionSecs = 0;
-
     g('clock').textContent = '0:00';
     g('info-duration').textContent = '—';
     g('demo-strip').hidden = true;
@@ -1180,21 +1922,16 @@
     const endBtn = g('btn-end');
     endBtn.disabled = false;
     endBtn.textContent = 'End Session';
-
-    const startNewBtn = g('btn-start-new-session');
-    if (startNewBtn) startNewBtn.remove();
-
-    switchScreen('setup');
   }
 
   /* ── Client tool: ePRO data ────────────────────────────── */
   function handleEproSubmit(p) {
-    // Badge
+    lastSessionData = p;
+
     const badge = g('epro-badge');
     badge.className = 'badge complete';
     badge.textContent = 'Complete';
 
-    // Metrics
     const metrics = [
       { label: 'Fatigue Level',      val: p.fatigue_score   },
       { label: 'Sleep Disruption',   val: p.sleep_quality   },
@@ -1227,7 +1964,6 @@
       list.appendChild(el);
     });
 
-    // Animate bars after next frame
     requestAnimationFrame(() => {
       setTimeout(() => {
         document.querySelectorAll('.bar-fill').forEach(b => {
@@ -1236,14 +1972,12 @@
       }, 80);
     });
 
-    // Notes
     if (p.notable_concerns) {
       const n = g('notes-text');
       n.className = 'notes-text';
       n.textContent = p.notable_concerns;
     }
 
-    // Summary
     if (p.session_summary) {
       g('summary-card').hidden = false;
       g('summary-text').textContent = p.session_summary;
@@ -1269,7 +2003,6 @@
       g('alert-quote').textContent = `"${p.patient_statement}"`;
     }
 
-    // Update doctor name
     g('notif-doc-name').textContent = g('physician').value;
 
     const now     = new Date();
@@ -1288,19 +2021,50 @@
       g('notif-crisis-time').textContent = 'Active';
     }, 1300);
 
-    return 'Safety alert triggered. Supervising physician and emergency contact have been notified. Connecting patient to crisis support resources now. Please continue speaking with the patient calmly until help arrives.';
+    return 'Safety alert triggered. Supervising physician and emergency contact have been notified.';
   }
 
   function dismissAlert() {
     g('safety-modal').hidden = true;
   }
 
-  /* ── UI helpers ────────────────────────────────────────── */
-  function switchScreen(screen) {
-    g('setup-screen').hidden   = screen !== 'setup';
-    g('session-screen').hidden = screen !== 'session';
+  /* ── Message modal ─────────────────────────────────────── */
+  function openMessageModal() {
+    g('msg-compose').hidden = false;
+    g('msg-sent').hidden = true;
+    g('msg-textarea').value = '';
+    g('message-modal').hidden = false;
   }
 
+  function closeMessageModal() {
+    g('message-modal').hidden = true;
+  }
+
+  function sendMessage() {
+    const text = g('msg-textarea').value.trim();
+    if (!text) { g('msg-textarea').focus(); return; }
+    g('msg-compose').hidden = true;
+    g('msg-sent').hidden = false;
+  }
+
+  /* ── Feedback ──────────────────────────────────────────── */
+  function setRating(val) {
+    document.querySelectorAll('.star-btn').forEach(b => {
+      const bVal = parseInt(b.dataset.val);
+      b.classList.toggle('active', bVal <= val);
+    });
+  }
+
+  function submitFeedback() {
+    const activeStars = document.querySelectorAll('.star-btn.active').length;
+    const text = g('feedback-text').value.trim();
+    if (!activeStars && !text) { alert('Please provide a rating or feedback.'); return; }
+    alert('Thank you for your feedback! Your response has been recorded.');
+    g('feedback-text').value = '';
+    document.querySelectorAll('.star-btn').forEach(b => b.classList.remove('active'));
+  }
+
+  /* ── UI helpers ────────────────────────────────────────── */
   function populateHeader() {
     g('h-patient').textContent  = g('patient-name').value;
     g('h-trial').textContent    = g('trial-id').value;
@@ -1324,8 +2088,7 @@
   }
 
   function setWaveform(mode) {
-    const wf = g('waveform');
-    wf.className = 'waveform ' + (mode || '');
+    g('waveform').className = 'waveform ' + (mode || '');
   }
 
   function setMsg(text) {
