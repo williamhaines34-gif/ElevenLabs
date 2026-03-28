@@ -424,6 +424,16 @@
 
     .btn-end:hover:not(:disabled) { border-color: var(--danger); color: var(--danger); background: #FEF2F2; }
     .btn-end:disabled { opacity: 0.4; cursor: default; }
+    .btn-start-new {
+      border-color: var(--primary);
+      color: var(--primary-dark);
+      background: #ECFEFF;
+    }
+    .btn-start-new:hover {
+      border-color: var(--primary);
+      color: var(--primary-dark);
+      background: #CCFBF1;
+    }
 
     /* ─── ePRO PANEL ────────────────────────────────────────────── */
     .epro-panel {
@@ -1108,12 +1118,79 @@
     finalizeSession();
     setStatus('ended', 'Session Ended');
     setMsg('Session complete. Thank you, ' + g('patient-name').value + '. Your data has been securely recorded.');
+    if (g('epro-badge').textContent.trim() === 'Pending') {
+      demoFillData();
+    }
     g('btn-end').disabled = true;
     g('btn-end').textContent = 'Session Complete';
+    showStartNewSessionButton();
   }
 
   function finalizeSession() {
     g('info-duration').textContent = g('clock').textContent;
+  }
+
+  function showStartNewSessionButton() {
+    const existing = g('btn-start-new-session');
+    if (existing) {
+      existing.hidden = false;
+      return;
+    }
+    const btn = document.createElement('button');
+    btn.id = 'btn-start-new-session';
+    btn.className = 'btn-end btn-start-new';
+    btn.textContent = 'Start New Session';
+    btn.addEventListener('click', resetToSetupScreen);
+    g('btn-end').insertAdjacentElement('afterend', btn);
+  }
+
+  function resetToSetupScreen() {
+    stopTimer();
+    conversation = null;
+    isDemoMode = false;
+    sessionSecs = 0;
+
+    g('clock').textContent = '0:00';
+    g('info-duration').textContent = '—';
+    g('demo-strip').hidden = true;
+
+    const badge = g('epro-badge');
+    badge.className = 'badge pending';
+    badge.textContent = 'Pending';
+
+    g('metrics-empty').style.display = '';
+    g('metrics-data').style.display = 'none';
+    g('metrics-data').innerHTML = '';
+
+    const notes = g('notes-text');
+    notes.className = 'notes-text empty';
+    notes.textContent = 'Notable concerns will appear here once the session is complete.';
+
+    g('summary-card').hidden = true;
+    g('summary-text').textContent = '';
+
+    g('safety-modal').hidden = true;
+    g('notif-doc').classList.remove('show');
+    g('notif-ec').classList.remove('show');
+    g('notif-crisis').classList.remove('show');
+    g('notif-doc-time').textContent = 'Sending…';
+    g('notif-ec-time').textContent = 'Sending…';
+    g('notif-crisis-time').textContent = 'Active';
+    g('alert-type-label').textContent = 'Emergency protocol activated';
+    g('alert-quote').textContent = 'Patient has expressed something requiring immediate clinical attention.';
+
+    setStatus('idle', 'Initializing…');
+    setWaveform('');
+    setMsg('Connecting to your Trial Companion…');
+
+    const endBtn = g('btn-end');
+    endBtn.disabled = false;
+    endBtn.textContent = 'End Session';
+
+    const startNewBtn = g('btn-start-new-session');
+    if (startNewBtn) startNewBtn.remove();
+
+    switchScreen('setup');
   }
 
   /* ── Client tool: ePRO data ────────────────────────────── */
