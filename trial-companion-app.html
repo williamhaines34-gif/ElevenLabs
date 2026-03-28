@@ -1229,7 +1229,7 @@
 <body>
 
 <!-- hidden patient config -->
-<input type="hidden" id="agent-id" value="agent_4701kmtqwp0efxgatzgtnp9krzhn" />
+<input type="hidden" id="agent-id" value="agent_2001kmtzccd4f4e8k7amrqvcxh0a" />
 <input type="hidden" id="patient-name" value="Billy" />
 <input type="hidden" id="trial-id" value="ILLUMINATE-1" />
 <input type="hidden" id="physician" value="Dr. Priya Mehta" />
@@ -1757,9 +1757,19 @@
     populateHeader();
     switchScreen('session');
     setStatus('connect', 'Connecting…');
+    setMsg('Requesting microphone access…');
 
     try {
-      const { Conversation } = await import('https://esm.sh/@11labs/client');
+      await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch (micErr) {
+      console.error('Microphone access denied:', micErr);
+      setStatus('error', 'Microphone Blocked');
+      setMsg('Microphone access is required for voice sessions. Please allow microphone access and try again.');
+      return;
+    }
+
+    try {
+      const { Conversation } = await import('https://esm.sh/@elevenlabs/client');
 
       conversation = await Conversation.startSession({
         agentId,
@@ -1778,7 +1788,7 @@
 
     } catch (err) {
       console.error(err);
-      setStatus('error', 'SDK Error');
+      setStatus('error', 'Connection Error');
       setMsg('Could not connect to the voice service. Please check your connection and try again.');
     }
   }
